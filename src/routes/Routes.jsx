@@ -7,6 +7,9 @@ import SignupPage from "../pages/SignupPage";
 import FoodPage from "../pages/FoodPage";
 import RestaurentPage from "../pages/RestaurentPage";
 import Cart from "../pages/Cart";
+import UserLayout from "../layout/UserLayout";
+import ProfilePage from "../pages/ProfilePage";
+import AuthUser from "../../protectedRoutes/AuthUser";
 
 export const router = createBrowserRouter([
     {
@@ -37,4 +40,17 @@ export const router = createBrowserRouter([
         }
       ]
     },
+    {
+        path:"user",
+        element:(<AuthUser>
+                    <UserLayout />,
+                </AuthUser>),
+        children:[
+            {
+                path:"profile",
+                element: <ProfilePage />
+            }
+        ]
+        
+    }
   ]);

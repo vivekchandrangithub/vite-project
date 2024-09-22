@@ -1,7 +1,9 @@
 import React from 'react';
+import { CircleUser } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const UserHeader = () => {
   return (
     <div className='flex flex-col sm:flex-row justify-between items-center w-full px-5 sm:px-20 py-5 h-auto bg-primary-content'>
       <Link to={'/'}>
@@ -21,10 +23,17 @@ const Header = () => {
           <Link to={'/about'} className='hover:text-primary'>About</Link>
         </li>
       </ul>
-
-      <Link className='btn btn-primary mt-4 sm:mt-0' to={'/signup'}>Sign up</Link>
+      <div className='flex gap-14'>
+        <Link>
+        <ShoppingBag />
+        </Link>
+        <Link to='/user/profile'>
+        <CircleUser />
+        </Link>
+      </div>
+      
     </div>
   );
 }
 
-export default Header;
+export default UserHeader;

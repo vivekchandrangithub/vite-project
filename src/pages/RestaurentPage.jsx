@@ -40,6 +40,7 @@ const RestaurentPage = () => {
                         <div className='text-md'>Category: {restaurant.category}</div>
                         <div className='text-md'>Location: {restaurant.place}</div>
                         <div className='text-md'>Description: {restaurant.description}</div>
+                        <button>view</button>
                     </div>
                 </li>
             ))
