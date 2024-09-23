@@ -10,6 +10,7 @@ import Cart from "../pages/Cart";
 import UserLayout from "../layout/UserLayout";
 import ProfilePage from "../pages/ProfilePage";
 import AuthUser from "../../protectedRoutes/AuthUser";
+import RestaurentDetails from "../pages/RestaurentDetails";
 
 export const router = createBrowserRouter([
     {
@@ -37,6 +38,12 @@ export const router = createBrowserRouter([
         },{
             path:"cart",
             element:<Cart />
+        },{
+            path:"profile",
+            element:<ProfilePage />
+        },{
+            path:"/singlerestaurent/:restaurentId",
+            element:<RestaurentDetails />
         }
       ]
     },

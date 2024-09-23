@@ -17,7 +17,7 @@ const SignupPage = () => {
       });
       console.log(response, '====response');
       toast.success('Signup successful!');
-      navigate('/restaurent');
+      navigate('/');
     } catch (error) {
       console.log(error, '====error');
       toast.error('Signup failed! Please try again.');

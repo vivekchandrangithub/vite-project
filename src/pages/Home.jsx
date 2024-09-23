@@ -1,5 +1,6 @@
 import React from 'react'
 import RestaurentPage from './RestaurentPage';
+import FoodPage from './FoodPage';
 
 
 const HOME = () => {
@@ -10,6 +11,7 @@ const HOME = () => {
             <h1 className='font-bold text-5xl my-5 text-white'>Welcome user</h1>
             <p className='text-2xl font-bold text-white '>Welcome to your favorite food spot</p>
           <RestaurentPage />
+          <FoodPage />
         </div>
     </main>
 </div>

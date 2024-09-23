@@ -37,11 +37,15 @@ const FoodPage = () => {
         ) : (
             foods.map((foods, index) => (
                 <li key={foods.id || index} className='bg-white bg-opacity-20 p-4 rounded-lg shadow-lg text-white flex flex-col justify-between'>
-                    <div>
+                    <div className='border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300'>
                         <div className='font-bold text-xl'>{foods.name}</div>
-                        <div className='text-md'>Category: {foods.category}</div>
-                        <div className='text-md'>Location: {foods.place}</div>
-                        <div className='text-md'>Description: {foods.description}</div>
+                        <div className='font-bold text-xl mb-2'>Category: {foods.category}</div>
+                        <div className='text-md mb-1'>Location: {foods.place}</div>
+                        <div className='text-md mb-2'>Description: {foods.description}</div>
+                        <div className='flex gap-3'>
+                          <button className='bg-orange-300 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300'>Add to my cart</button>
+                          <button className='bg-red-700 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300'>Deliver now!</button>
+                        </div>
                     </div>
                 </li>
             ))
@@ -51,4 +55,4 @@ const FoodPage = () => {
   );
 };
 
-export default FoodPage
+export default FoodPage;

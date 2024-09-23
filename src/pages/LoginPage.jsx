@@ -15,7 +15,7 @@ const LoginPage = () => {
         const response = await axiosInstance({method:"POST",url:"/login/userlogin",data})
         console.log(response,'====response')
         toast.success("login sucess")
-        navigate('/user/profile')
+        navigate('/')
     }catch(error){
       console.log(error,'====error')
       toast.error("Invalid username or password")

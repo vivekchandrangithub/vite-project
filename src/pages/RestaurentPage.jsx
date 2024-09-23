@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { axiosInstance } from '../config/axiosinstance';
 
 const RestaurentPage = () => {
@@ -35,12 +36,12 @@ const RestaurentPage = () => {
         ) : (
             restaurants.map((restaurant, index) => (
                 <li key={restaurant.id || index} className='bg-white bg-opacity-20 p-4 rounded-lg shadow-lg text-white flex flex-col justify-between'>
-                    <div>
-                        <div className='font-bold text-xl'>{restaurant.name}</div>
-                        <div className='text-md'>Category: {restaurant.category}</div>
-                        <div className='text-md'>Location: {restaurant.place}</div>
-                        <div className='text-md'>Description: {restaurant.description}</div>
-                        <button>view</button>
+                    <div className='border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300'>
+                        <div className='font-bold text-xl mb-2'>{restaurant.name}</div>
+                        <div className='text-md mb-1'>Category: {restaurant.category}</div>
+                        <div className='text-md mb-1'>Location: {restaurant.place}</div>
+                        <div className='text-md mb-2'>Description: {restaurant.description}</div>
+                        <Link to={`/singlerestaurent/${restaurant.id}`} className='bg-orange-300 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300'>view</Link>
                     </div>
                 </li>
             ))
