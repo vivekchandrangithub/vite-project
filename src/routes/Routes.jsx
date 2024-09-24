@@ -11,6 +11,8 @@ import UserLayout from "../layout/UserLayout";
 import ProfilePage from "../pages/ProfilePage";
 import AuthUser from "../../protectedRoutes/AuthUser";
 import RestaurentDetails from "../pages/RestaurentDetails";
+import FoodDetails from "../pages/FoodDetails";
+import OrderPage from "../pages/OrderPage";
 
 export const router = createBrowserRouter([
     {
@@ -42,8 +44,14 @@ export const router = createBrowserRouter([
             path:"profile",
             element:<ProfilePage />
         },{
-            path:"/singlerestaurent/:restaurentId",
+            path:"/singlerestaurent/:id",
             element:<RestaurentDetails />
+        },{
+            path:"foods/:foodId",
+            element:<FoodDetails />
+        },{
+            path:"/order/:foodId",
+            element:<OrderPage />
         }
       ]
     },

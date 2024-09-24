@@ -40,8 +40,7 @@ const RestaurentPage = () => {
                         <div className='font-bold text-xl mb-2'>{restaurant.name}</div>
                         <div className='text-md mb-1'>Category: {restaurant.category}</div>
                         <div className='text-md mb-1'>Location: {restaurant.place}</div>
-                        <div className='text-md mb-2'>Description: {restaurant.description}</div>
-                        <Link to={`/singlerestaurent/${restaurant.id}`} className='bg-orange-300 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300'>view</Link>
+                        <Link to={`/singlerestaurent/${restaurant._id}`} className='bg-orange-300 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300'>view</Link>
                     </div>
                 </li>
             ))
