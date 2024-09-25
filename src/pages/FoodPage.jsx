@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../config/axiosinstance';
+
 
 const FoodPage = () => {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [cart, setCart] = useState([]); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFoods = async () => {
@@ -22,32 +24,22 @@ const FoodPage = () => {
     fetchFoods();
   }, []);
 
-  // Add to cart function
-  const addToCart = async (food) => {
-    try {
-      // Assuming you have the userId from context or auth
-      const userId = ':userId';  // Replace with actual user ID
-      
-      // Send the POST request to add the food to the cart
-      const response = await axiosInstance.post('/carts', { userId, foodId: food._id });
-      
-      // If added successfully, show a success message
+  const addToCart = (food) => {
+    const existingFood = cart.find(item => item._id === food._id);
+    if (existingFood) {
+      alert('You already added this food to your cart.');
+    } else {
+      setCart([...cart, { ...food, quantity: 1 }]); 
       alert(`${food.name} added to cart successfully!`);
-    } catch (err) {
-      if (err.response && err.response.data.message === 'You already added this food to your cart.') {
-        // If the food is already in the cart, show an alert
-        alert('You already added this food to your cart.');
-      } else {
-        // Handle other errors
-        console.error('Error adding to cart:', err.message);
-        alert('Failed to add to cart. Please try again.');
-      }
     }
   };
 
-  // Deliver Now logic: Navigates to the food details page
   const handleDeliverNow = (food) => {
     navigate(`/foods/${food._id}`); 
+  };
+
+  const proceedToCheckout = () => {
+    navigate('/cart', { state: { cart } });
   };
 
   if (loading) return <div>Loading...</div>;
@@ -65,7 +57,7 @@ const FoodPage = () => {
             <li key={food.id || index} className='bg-white bg-opacity-20 p-4 rounded-lg shadow-lg text-white flex flex-col justify-between'>
               <div className='border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300'>
                 <div className='font-bold text-xl'>{food.name}</div>
-                <div className='font-bold text-xl mb-2'> {food.category} item</div>
+                <div className='font-bold text-xl mb-2'>{food.category} item</div>
                 <div className='text-md mb-1 font-bold'>${food.price}</div>
                 
                 <div className='flex gap-3'>
@@ -87,6 +79,7 @@ const FoodPage = () => {
           ))
         )}
       </ul>
+      <button className='bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 m-5' onClick={proceedToCheckout} >Go to Cart</button>
     </div>
   );
 };

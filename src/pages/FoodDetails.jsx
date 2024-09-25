@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { axiosInstance } from '../config/axiosinstance';
 
 const FoodDetails = () => {
-  const { foodId } = useParams(); // Get the foodId from the URL parameters
+  const { foodId } = useParams(); 
   const [food, setFood] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,7 +43,7 @@ const FoodDetails = () => {
       <p className='text-lg font-semibold mb-2'>{food.category} item</p>
       <p className='mb-5'>{food.description}</p>
       <Link
-        to={`/order/${foodId}`}
+        to={`/order`}
         className='bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300'
       >
         Deliver Now!

@@ -13,6 +13,9 @@ import AuthUser from "../../protectedRoutes/AuthUser";
 import RestaurentDetails from "../pages/RestaurentDetails";
 import FoodDetails from "../pages/FoodDetails";
 import OrderPage from "../pages/OrderPage";
+import PlaceOrder from "../pages/OrderPage";
+import PaymentPage from "../pages/PaymentPage";
+
 
 export const router = createBrowserRouter([
     {
@@ -50,8 +53,11 @@ export const router = createBrowserRouter([
             path:"foods/:foodId",
             element:<FoodDetails />
         },{
-            path:"/order/:foodId",
-            element:<OrderPage />
+            path:"/order",
+            element:<PlaceOrder />
+        },{
+            path:"/payment",
+            element:<PaymentPage />
         }
       ]
     },

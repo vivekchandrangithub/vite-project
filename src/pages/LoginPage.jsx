@@ -13,24 +13,11 @@ const LoginPage = () => {
       const response = await axiosInstance.post("/login/userlogin", data);
       console.log(response, '====response');
       toast.success("Login successful");
-      // Save the token (e.g., in local storage)
-      localStorage.setItem('token', response.data.token); // Adjust based on your response
+      localStorage.setItem('token', response.data.token); 
       navigate('/');
     } catch (error) {
       console.log(error, '====error');
       toast.error("Invalid username or password");
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await axiosInstance.get('/logout/userlogout');
-      localStorage.removeItem('token');
-      toast.success("Logout successful");
-      navigate('/login'); // Redirect to login or home page
-    } catch (error) {
-      console.log(error, '====error');
-      toast.error("Failed to logout");
     }
   };
 
@@ -63,10 +50,6 @@ const LoginPage = () => {
               <button className="btn btn-primary">Login</button>
             </div>
           </form>
-          {/* Logout Button */}
-          <div className="form-control mt-6">
-            <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
-          </div>
         </div>
       </div>
     </div>

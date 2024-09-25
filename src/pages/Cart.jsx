@@ -1,11 +1,79 @@
-import React from 'react'
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-  return (
-    <div>
-      your cart page is work in progress
-    </div>
-  )
-}
+  const location = useLocation();
+  const { cart } = location.state || { cart: [] }; 
+  const navigate = useNavigate();
 
-export default Cart
+  const handleRemoveFromCart = (foodItem) => {
+    const newCart = cart.filter(item => item._id !== foodItem._id);
+    navigate('/cart', { state: { cart: newCart } });
+  };
+
+  const handleQuantityChange = (foodItem, newQuantity) => {
+    const newCart = cart.map(item =>
+      item._id === foodItem._id
+        ? { ...item, quantity: newQuantity }
+        : item
+    );
+    navigate('/cart', { state: { cart: newCart } });
+  };
+
+  const calculateTotal = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
+  return (
+<div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+      <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">Your Cart</h2>
+      <div className="space-y-4">
+        {cart.length > 0 ? (
+          cart.map((item, index) => (
+            <div key={item._id} className="flex items-center justify-between bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+               <div className="flex items-center">
+                <img src={item.image || 'https://via.placeholder.com/100'} alt={item.name} className="w-20 h-20 rounded mr-4" />
+                <div>
+                  <h3 className="text-lg font-semibold">{item.name}</h3>
+                  <p className="text-gray-600">Price: ₹{item.price}</p>
+                  <div className="flex items-center mt-2">
+                    <input
+                      type="number"
+                      value={item.quantity || 1}
+                      min="1"
+                      onChange={(e) => handleQuantityChange(item, parseInt(e.target.value))}
+                      className="border border-gray-300 rounded-md p-1 w-16 text-center"
+                    />
+                    <span className="ml-2 text-gray-600">Subtotal: ₹{item.price * (item.quantity || 1)}</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                onClick={() => handleRemoveFromCart(item)}
+              >
+                Remove
+              </button>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500">No items in the cart</p>
+        )}
+      </div>
+
+      {cart.length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-xl font-bold text-gray-800">Total: ₹{calculateTotal()}</h3>
+          <button
+            className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            onClick={() => navigate('/order', { state: { cart, total: calculateTotal() } })}
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Cart;
