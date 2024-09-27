@@ -60,9 +60,10 @@ const SignupPage = () => {
               </label>
               <input type="password" {...register('password')} placeholder="password" className="input input-bordered" required />
               <Link className="p-2" to="/login">Already User?</Link>
+              <Link className="p-2" to={"/login/adminLogin"}>ADMIN</Link>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Sign up</button>
+              <Link to={'/profile'} className="btn btn-primary">Sign up</Link>
             </div>
           </form>
         </div>

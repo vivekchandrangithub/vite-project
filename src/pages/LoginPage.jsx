@@ -11,12 +11,16 @@ const LoginPage = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axiosInstance.post("/login/userlogin", data);
-      console.log(response, '====response');
-      toast.success("Login successful");
-      localStorage.setItem('token', response.data.token); 
-      navigate('/');
+      console.log(response, '=== response from user login'); // Debug log to check response structure
+      if (response.data.success) {
+        toast.success("Login successful");
+        localStorage.setItem('token', response.data.token); 
+        navigate('/'); 
+      } else {
+        toast.error(response.data.message || "Login failed");
+      }
     } catch (error) {
-      console.log(error, '====error');
+      console.log(error, '==== error');
       toast.error("Invalid username or password");
     }
   };

@@ -10,13 +10,13 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      await axiosInstance.get('/logout/userlogout'); // Adjust this as needed
-      localStorage.removeItem('token');
-      toast.success("Logout successful");
-      navigate('/login');
+      await axiosInstance.get('/logout/userlogout'); // This will call the logout route in the backend
+      localStorage.removeItem('token'); // Remove the token from localStorage
+      toast.success("Logout successful"); // Notify user of successful logout
+      navigate('/login'); // Redirect to the login page
     } catch (error) {
       console.log(error, '====error');
-      toast.error("Failed to logout");
+      toast.error("Failed to logout"); // Notify user of failed logout
     }
   };
 
