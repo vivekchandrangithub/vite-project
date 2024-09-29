@@ -63,7 +63,7 @@ const SignupPage = () => {
               <Link className="p-2" to={"/login/adminLogin"}>ADMIN</Link>
             </div>
             <div className="form-control mt-6">
-              <Link to={'/profile'} className="btn btn-primary">Sign up</Link>
+              <Link to={'/'} className="btn btn-primary">Sign up</Link>
             </div>
           </form>
         </div>
