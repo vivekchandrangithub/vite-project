@@ -27,7 +27,7 @@ const Header = () => {
   {/* Logo */}
   <Link to={'/'} className="mb-4 sm:mb-0">
     <div className="font-bold text-2xl sm:text-3xl text-center sm:text-left">
-      Logo
+      Knife point
     </div>
   </Link>
 
