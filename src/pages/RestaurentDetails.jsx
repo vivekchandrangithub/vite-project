@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { axiosInstance } from '../config/axiosinstance';
+import FoodPage from './FoodPage';
 
 const SingleRestaurent = () => {
     const { id } = useParams(); // Capture the id from the URL
@@ -28,9 +29,8 @@ const SingleRestaurent = () => {
     if (error) return <div>Error: {error}</div>;
 
     return restaurant ? (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+          <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-          {/* Restaurant Image */}
           <img 
             src={restaurant.image} 
             alt={restaurant.name} 
@@ -48,11 +48,12 @@ const SingleRestaurent = () => {
               to={'/food'} 
               className='bg-orange-400 text-white px-6 py-3 rounded-full hover:bg-orange-500 transition duration-300 shadow-lg'
             >
-              Enjoy the Meals
+              Enjoy the Menu
             </Link>
           </div>
         </div>
-      </div>
+      
+        </div>
     ) : (
         <div>Restaurant not found.</div>
     );

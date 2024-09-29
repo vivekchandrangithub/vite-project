@@ -23,36 +23,45 @@ const Header = () => {
   const isLoggedIn = !!localStorage.getItem('token');
 
   return (
-    <div className='flex flex-col sm:flex-row justify-between items-center w-full px-5 sm:px-20 py-5 h-auto bg-primary-content'>
-      <Link to={'/'}>
-        <div className='font-bold text-3xl'>
-          Logo
-        </div>
-      </Link>
-
-      <ul className='flex flex-col sm:flex-row gap-5 sm:gap-10 items-center font-semibold'>
-        <li>
-          <Link to={'/'} className='hover:text-primary'>Home</Link>
-        </li>
-        <li>
-          <Link to={'/restaurent'} className='hover:text-primary'>Restaurants</Link>
-        </li>
-        <li>
-          <Link to={'/about'} className='hover:text-primary'>About</Link>
-        </li>
-      </ul>
-      <div className='flex gap-14'>
-        <Link to={'/cart'}>
-          <ShoppingBag />
-        </Link>
-        <Link to='/signup'>
-          <CircleUser />
-        </Link>
-        {isLoggedIn && (
-          <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
-        )}
-      </div>
+    <div className="flex flex-col sm:flex-row justify-between items-center w-full px-4 sm:px-20 py-5 bg-primary-content">
+  {/* Logo */}
+  <Link to={'/'} className="mb-4 sm:mb-0">
+    <div className="font-bold text-2xl sm:text-3xl text-center sm:text-left">
+      Logo
     </div>
+  </Link>
+
+  {/* Navigation Links */}
+  <ul className="flex flex-col sm:flex-row gap-3 sm:gap-8 items-center text-lg font-semibold">
+    <li>
+      <Link to={'/'} className="hover:text-primary transition-colors duration-300">Home</Link>
+    </li>
+    <li>
+      <Link to={'/restaurent'} className="hover:text-primary transition-colors duration-300">Restaurants</Link>
+    </li>
+    <li>
+      <Link to={'/about'} className="hover:text-primary transition-colors duration-300">About</Link>
+    </li>
+  </ul>
+
+  {/* Cart and User Actions */}
+  <div className="flex gap-6 sm:gap-10 mt-4 sm:mt-0 items-center">
+    <Link to={'/cart'}>
+      <ShoppingBag className="w-6 h-6 sm:w-8 sm:h-8" />
+    </Link>
+    <Link to="/signup">
+      <CircleUser className="w-6 h-6 sm:w-8 sm:h-8" />
+    </Link>
+    {isLoggedIn && (
+      <button 
+        onClick={handleLogout} 
+        className="btn btn-secondary text-sm sm:text-base px-4 py-2 transition-all duration-300"
+      >
+        Logout
+      </button>
+    )}
+  </div>
+</div>
   );
 }
 

@@ -2,43 +2,45 @@ import React from 'react'
 
 const Footer = () => {
   return (
-      <footer className="footer bg-base-200 text-base-content p-10">
-  <nav>
-    <h6 className="footer-title">Services</h6>
-    <a className="link link-hover">Branding</a>
-    <a className="link link-hover">Design</a>
-    <a className="link link-hover">Marketing</a>
-    <a className="link link-hover">Advertisement</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Company</h6>
-    <a className="link link-hover">About us</a>
-    <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Jobs</a>
-    <a className="link link-hover">Press kit</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Legal</h6>
-    <a className="link link-hover">Terms of use</a>
-    <a className="link link-hover">Privacy policy</a>
-    <a className="link link-hover">Cookie policy</a>
-  </nav>
-  <form>
-    <h6 className="footer-title">Newsletter</h6>
-    <fieldset className="form-control w-80">
-      <label className="label">
-        <span className="label-text">Enter your email address</span>
-      </label>
-      <div className="join">
-        <input
-          type="text"
-          placeholder="username@site.com"
-          className="input input-bordered join-item" />
-        <button className="btn btn-primary join-item">Subscribe</button>
-      </div>
-    </fieldset>
-  </form>
-</footer>
+    <footer className="footer flex flex-col sm:flex-row flex-wrap bg-base-200 text-base-content p-6 sm:p-10">
+    <nav className="mb-6 sm:mb-0 sm:mr-8 w-full sm:w-auto">
+      <h6 className="footer-title text-lg font-bold mb-2">Services</h6>
+      <a className="link link-hover block">Branding</a>
+      <a className="link link-hover block">Design</a>
+      <a className="link link-hover block">Marketing</a>
+      <a className="link link-hover block">Advertisement</a>
+    </nav>
+    <nav className="mb-6 sm:mb-0 sm:mr-8 w-full sm:w-auto">
+      <h6 className="footer-title text-lg font-bold mb-2">Company</h6>
+      <a className="link link-hover block">About us</a>
+      <a className="link link-hover block">Contact</a>
+      <a className="link link-hover block">Jobs</a>
+      <a className="link link-hover block">Press kit</a>
+    </nav>
+    <nav className="mb-6 sm:mb-0 sm:mr-8 w-full sm:w-auto">
+      <h6 className="footer-title text-lg font-bold mb-2">Legal</h6>
+      <a className="link link-hover block">Terms of use</a>
+      <a className="link link-hover block">Privacy policy</a>
+      <a className="link link-hover block">Cookie policy</a>
+    </nav>
+    <form className="w-full sm:w-auto">
+      <h6 className="footer-title text-lg font-bold mb-2">Newsletter</h6>
+      <fieldset className="form-control">
+        <label className="label">
+          <span className="label-text">Enter your email address</span>
+        </label>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="text"
+            placeholder="username@site.com"
+            className="input input-bordered w-full sm:w-auto"
+          />
+          <button className="btn btn-primary w-full sm:w-auto">Subscribe</button>
+        </div>
+      </fieldset>
+    </form>
+  </footer>
+  
 
   )
 }
