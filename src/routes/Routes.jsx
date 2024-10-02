@@ -9,110 +9,121 @@ import RestaurentPage from "../pages/RestaurentPage";
 import Cart from "../pages/Cart";
 import UserLayout from "../layout/UserLayout";
 import ProfilePage from "../pages/ProfilePage";
-import AuthUser from "../../protectedRoutes/AuthUser";
+import AuthUser from "../protectedRoutes/AuthUser"; // Protect User Routes
 import RestaurentDetails from "../pages/RestaurentDetails";
 import FoodDetails from "../pages/FoodDetails";
 import PlaceOrder from "../pages/OrderPage";
 import PaymentPage from "../pages/PaymentPage";
 import AdminDashboard from "../Admin/AdminDashboard"; // Admin Dashboard Component
-import AdminRoute from "../protectedRoutes/AuthAdmin";
+import AdminRoute from "../protectedRoutes/AuthAdmin"; // Protect Admin Routes
 import UserList from "../Admin/UserList";
 import AdminRestuarent from "../Admin/AdminRestuarent";
 import AdminFood from "../Admin/AdminFood";
 import AdminLoginPage from "../pages/AdminLogin";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <RootLayout />,
-        children: [
-            {
-                path: "",
-                element: <HOME />
-            },
-            {
-                path: "about",
-                element: <About />
-            },
-            {
-                path: "login",
-                element: <LoginPage />
-            },
-            {
-                path: "signup",
-                element: <SignupPage />
-            },
-            {
-                path: "food",
-                element: <FoodPage />
-            },
-            {
-                path: "restaurent",
-                element: <RestaurentPage />
-            },
-            {
-                path: "cart",
-                element: <Cart />
-            },
-            {
-                path: "profile",
-                element: <ProfilePage />
-            },
-            {
-                path: "/singlerestaurent/:id",
-                element: <RestaurentDetails />
-            },
-            {
-                path: "foods/:foodId",
-                element: <FoodDetails />
-            },
-            {
-                path: "/order",
-                element: <PlaceOrder />
-            },
-            {
-                path: "/payment",
-                element: <PaymentPage />
-            },
-            {
-                path: "/login/adminLogin",
-                element: <AdminLoginPage />
-            },
-            {
-                path: "/admindashboard",
-                element: (
-                    <AdminRoute>
-                        <AdminDashboard/>
-                    </AdminRoute>
-                ), children:[
-                    {
-                        path: "userlist", // Adjusted child route
-                        element: <UserList />
-                    },
-                    {
-                        path: "adminRestaurent", // Adjusted child route
-                        element: <AdminRestuarent />
-                    },
-                    {
-                        path: "adminFood", // Adjusted child route
-                        element: <AdminFood />
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        path: "user",
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      {
+        path: "",
+        element: <HOME />,
+      },
+      {
+        path: "about",
+        element: <About />,
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "signup",
+        element: <SignupPage />,
+      },
+      {
+        path: "food",
+        element: <FoodPage />,
+      },
+      {
+        path: "restaurent",
+        element: <RestaurentPage />,
+      },
+      // Protect the Cart route
+      {
+        path: "cart",
         element: (
-            <AuthUser>
-                <UserLayout />
-            </AuthUser>
+          <AuthUser>
+            <Cart />
+          </AuthUser>
+        ),
+      },
+      // Protect the Profile route
+      {
+        path: "profile",
+        element: (
+          <AuthUser>
+            <ProfilePage />
+          </AuthUser>
+        ),
+      },
+      {
+        path: "/singlerestaurent/:id",
+        element: <RestaurentDetails />,
+      },
+      {
+        path: "foods/:foodId",
+        element: <FoodDetails />,
+      },
+      {
+        path: "/order",
+        element: <PlaceOrder />,
+      },
+      {
+        path: "/payment",
+        element: <PaymentPage />,
+      },
+      {
+        path: "/login/adminLogin",
+        element: <AdminLoginPage />,
+      },
+      {
+        path: "/admindashboard",
+        element: (
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
         ),
         children: [
-            {
-                path: "profile",
-                element: <ProfilePage />
-            }
-        ]
-    },
+          {
+            path: "userlist", // Adjusted child route
+            element: <UserList />,
+          },
+          {
+            path: "adminRestaurent", // Adjusted child route
+            element: <AdminRestuarent />,
+          },
+          {
+            path: "adminFood", // Adjusted child route
+            element: <AdminFood />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "user",
+    element: (
+      <AuthUser>
+        <UserLayout />
+      </AuthUser>
+    ),
+    children: [
+      {
+        path: "profile",
+        element: <ProfilePage />,
+      },
+    ],
+  },
 ]);
