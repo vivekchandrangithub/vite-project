@@ -7,7 +7,7 @@ const FoodPage = () => {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart')) || []); // Load from localStorage
+  const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart')) || []);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +25,15 @@ const FoodPage = () => {
   }, []);
 
   const addToCart = (food) => {
+    // Check if the user is logged in by verifying if a token exists in localStorage
+    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+
+    if (!token) {
+      // If not logged in, show a toast message and return
+      toast.error('Login first to add a food item to your cart.');
+      return;
+    }
+
     const existingFood = cart.find(item => item._id === food._id);
     if (existingFood) {
       toast.error('You already added this food to your cart.');

@@ -42,12 +42,6 @@ const FoodDetails = () => {
 
       <p className='text-lg font-semibold mb-2'>{food.category} item</p>
       <p className='mb-5'>{food.description}</p>
-      <Link
-        to={`/order`}
-        className='bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300'
-      >
-        Deliver Now!
-      </Link>
     </div>
   </div>
 </div>

@@ -10,26 +10,17 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Send login request to the backend
       const response = await axiosInstance.post("/login/userlogin", data);
-      console.log(response, '=== response from user login'); // Debug log to check response structure
-      
-      // Check if login was successful
-      if (response.data.success) {
-        // Display success toast
-        toast.success("Login successful");
-
-        // Store the token in localStorage
-        localStorage.setItem('token', response.data.token);
-
-        // Navigate to the home page or dashboard
+      console.log(response, '=== response from user login'); 
+      if (response.data.success) {       
+        toast.success("Login successful");      
+        localStorage.setItem('token', response.data.token);     
         navigate('/profile'); 
-      } else {
-        // Display error message if login failed
+      } else {    
         toast.error(response.data.message || "Login failed");
       }
     } catch (error) {
-      console.log(error, '==== error'); // Debug log in case of error
+      console.log(error, '==== error'); 
       toast.error("Invalid username or password");
     }
   };
