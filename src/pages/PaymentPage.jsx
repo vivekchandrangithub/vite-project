@@ -10,7 +10,7 @@ const PaymentForm = () => {
   const elements = useElements();
   const navigate = useNavigate();
   const location = useLocation();
-  const { cart, total } = location.state || {}; // Get cart and total from state
+  const { cart, total } = location.state || {};
 
   const [name, setName] = useState('');
   const [mobile, setMobile] = useState('');
@@ -19,67 +19,66 @@ const PaymentForm = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      // Automatically remove paid items from the cart
+      const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+      const updatedCart = storedCart.filter(item => !cart.some(paidItem => paidItem._id === item._id));
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+
       const timer = setTimeout(() => {
         navigate('/'); // Navigate to home page after 3 seconds
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, navigate, cart]);
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!stripe || !elements) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
 
-  const cardElement = elements.getElement(CardElement);
+    const cardElement = elements.getElement(CardElement);
 
-  try {
-    const response = await fetch('https://server-main-5.onrender.com/payments/create-payment-intent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: total * 100, // Convert total to cents
-        currency: 'usd',
-      }),
-    });
-
-    if (!response.ok) {
-      const errorMessage = await response.json();
-      throw new Error(errorMessage.message || 'Failed to create payment intent');
-    }
-
-    const { clientSecret } = await response.json();
-    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: cardElement,
-        billing_details: {
-          name,
+    try {
+      const response = await fetch('https://server-main-5.onrender.com/payments/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      },
-    });
+        body: JSON.stringify({
+          amount: total * 100, // Convert total to cents
+          currency: 'usd',
+        }),
+      });
 
-    if (error) {
-      setError(error.message);
-      toast.error(error.message); // Show error toast
-      console.error('Payment error:', error.message);
-    } else if (paymentIntent.status === 'succeeded') {
-      setIsSuccess(true); // Payment successful
-      toast.success('Payment successful!'); // Show success toast
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        throw new Error(errorMessage.message || 'Failed to create payment intent');
+      }
+
+      const { clientSecret } = await response.json();
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: { name },
+        },
+      });
+
+      if (error) {
+        setError(error.message);
+        console.error('Payment error:', error.message);
+      } else if (paymentIntent.status === 'succeeded') {
+        setIsSuccess(true); // Payment successful
+      }
+    } catch (err) {
+      setError(`Payment failed: ${err.message}`);
+      console.error('Error during payment:', err.message);
     }
-  } catch (err) {
-    setError(`Payment failed: ${err.message}`);
-    toast.error(`Payment failed: ${err.message}`); // Show error toast
-    console.error('Error during payment:', err.message);
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Payment Details</h2>
         
-        {/* Order Summary Section */}
         <div className="mb-4">
           <h3 className="text-xl font-bold mb-2">Order Summary</h3>
           {cart && cart.length > 0 ? (
@@ -97,69 +96,58 @@ const PaymentForm = () => {
           )}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Mobile Number"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            required
-          />
-          <div className="border rounded-lg p-4">
-            <CardElement
-              options={{
-                style: {
-                  base: {
-                    fontSize: '16px',
-                    color: '#424770',
-                    '::placeholder': {
-                      color: '#aab7c4',
-                    },
-                  },
-                  invalid: {
-                    color: '#9e2146',
-                  },
-                },
-              }}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="name" className="block font-semibold text-gray-700">Name</label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
             />
           </div>
+          
+          <div className="mb-4">
+            <label htmlFor="mobile" className="block font-semibold text-gray-700">Mobile</label>
+            <input
+              id="mobile"
+              type="text"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="card" className="block font-semibold text-gray-700">Card Details</label>
+            <CardElement id="card" className="p-2 border border-gray-300 rounded" />
+          </div>
+
+          {error && <p className="text-red-500">{error}</p>}
+          {isSuccess && <p className="text-green-500">Payment successful! Redirecting...</p>}
+
           <button
             type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
             disabled={!stripe}
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200"
           >
-            {stripe ? 'Submit Payment' : 'Loading...'}
+            Pay ₹{total}
           </button>
         </form>
-
-        {isSuccess && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg p-8 shadow-lg max-w-sm text-center">
-              <h3 className="text-xl font-semibold text-green-600">Payment of ₹{total} Successful!</h3>
-              <p className="mt-4 text-gray-600">Redirecting to the home page in 3 seconds...</p>
-            </div>
-          </div>
-        )}
-
-        {error && <div className="mt-4 text-red-600 text-center">{error}</div>}
       </div>
     </div>
   );
 };
 
-const Payment = () => (
-  <Elements stripe={stripePromise}>
-    <PaymentForm />
-  </Elements>
-);
+const PaymentPage = () => {
+  return (
+    <Elements stripe={stripePromise}>
+      <PaymentForm />
+    </Elements>
+  );
+};
 
-export default Payment;
+export default PaymentPage;
