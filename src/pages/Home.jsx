@@ -1,6 +1,5 @@
 import React from 'react'
 import RestaurentPage from './RestaurentPage';
-import FoodPage from './FoodPage';
 
 
 const HOME = () => {

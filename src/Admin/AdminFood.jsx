@@ -161,9 +161,7 @@ const AdminFood = () => {
                                 <div>Vegetarian: <span className='text-yellow-300'>{food.isVeg ? 'Yes' : 'No'}</span></div>
                             </div>
                             <div className='flex flex-col sm:flex-row justify-between mt-4'>
-                                <button className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-300 mb-2 sm:mb-0'>
-                                    Edit Food Item
-                                </button>
+                                
                                 <button 
                                     className='bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-300'
                                     onClick={() => deleteFood(food._id)}

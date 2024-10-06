@@ -12,7 +12,6 @@ import ProfilePage from "../pages/ProfilePage";
 import AuthUser from "../protectedRoutes/AuthUser"; // Protect User Routes
 import RestaurentDetails from "../pages/RestaurentDetails";
 import FoodDetails from "../pages/FoodDetails";
-import PlaceOrder from "../pages/OrderPage";
 import PaymentPage from "../pages/PaymentPage";
 import AdminDashboard from "../Admin/AdminDashboard"; // Admin Dashboard Component
 import AdminRoute from "../protectedRoutes/AuthAdmin"; // Protect Admin Routes
@@ -77,10 +76,6 @@ export const router = createBrowserRouter([
         element: <FoodDetails />,
       },
       {
-        path: "/order",
-        element: <PlaceOrder />,
-      },
-      {
         path: "/payment",
         element: <PaymentPage />,
       },
@@ -97,15 +92,15 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "userlist", // Adjusted child route
+            path: "userlist", 
             element: <UserList />,
           },
           {
-            path: "adminRestaurent", // Adjusted child route
+            path: "adminRestaurent", 
             element: <AdminRestuarent />,
           },
           {
-            path: "adminFood", // Adjusted child route
+            path: "adminFood", 
             element: <AdminFood />,
           },
         ],
