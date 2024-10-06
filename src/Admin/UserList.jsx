@@ -24,20 +24,7 @@ const UsersList = () => {
     fetchUsers();
   }, []);
 
-  const removeUser = async (userId) => {
-    try {
-      const response = await fetch(`https://server-main-5.onrender.com/usersignup/${userId}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete the user');
-      }
-    
-      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
-    } catch (err) {
-      setError('Error deleting user');
-    }
-  };
+ 
 
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-red-500 text-center">{error}</div>;
@@ -54,12 +41,7 @@ const UsersList = () => {
                 <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
                 <p className="text-gray-600">Email: {user.email}</p>
                 <p className="text-gray-600">Mobile: {user.mobile}</p>
-                <button
-                  onClick={() => removeUser(user._id)}
-                  className="mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-200" 
-                >
-                  Remove User
-                </button>
+                
               </div>
             ))
           ) : (
