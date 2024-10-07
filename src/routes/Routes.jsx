@@ -1,4 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
+import React, { useEffect } from "react";
+import { createBrowserRouter, useLocation } from "react-router-dom";
 import HOME from "../pages/Home";
 import RootLayout from "../layout/RootLayout";
 import About from "../pages/About";
@@ -20,10 +21,26 @@ import AdminRestuarent from "../Admin/AdminRestuarent";
 import AdminFood from "../Admin/AdminFood";
 import AdminLoginPage from "../pages/AdminLogin";
 
+// Scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation(); // Get current route path
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top of the page
+  }, [pathname]); // Trigger when pathname changes
+
+  return null; // No UI needed
+};
+
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <>
+        <ScrollToTop /> {/* Add the scroll to top functionality */}
+        <RootLayout />
+      </>
+    ),
     children: [
       {
         path: "",
@@ -49,7 +66,6 @@ export const router = createBrowserRouter([
         path: "restaurent",
         element: <RestaurentPage />,
       },
-      // Protect the Cart route
       {
         path: "cart",
         element: (
@@ -58,7 +74,6 @@ export const router = createBrowserRouter([
           </AuthUser>
         ),
       },
-      // Protect the Profile route
       {
         path: "profile",
         element: (
@@ -92,15 +107,15 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "userlist", 
+            path: "userlist",
             element: <UserList />,
           },
           {
-            path: "adminRestaurent", 
+            path: "adminRestaurent",
             element: <AdminRestuarent />,
           },
           {
-            path: "adminFood", 
+            path: "adminFood",
             element: <AdminFood />,
           },
         ],
