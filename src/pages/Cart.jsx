@@ -39,7 +39,7 @@ const Cart = () => {
   // Checkout button handler
   const handleCheckout = () => {
     // Navigate to the order page and pass the cart and total as state
-    navigate('/order', { state: { cart, total: calculateTotal() } });
+    navigate('/payment', { state: { cart, total: calculateTotal() } });
   };
 
   return (

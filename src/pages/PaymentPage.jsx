@@ -12,14 +12,19 @@ const PaymentForm = () => {
   const location = useLocation();
   const { cart, total } = location.state || {};
 
+  // New state for delivery address details
   const [name, setName] = useState('');
   const [mobile, setMobile] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  // Automatically clear the cart and navigate to the home page after successful payment
   useEffect(() => {
     if (isSuccess) {
-      // Automatically remove paid items from the cart
       const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
       const updatedCart = storedCart.filter(item => !cart.some(paidItem => paidItem._id === item._id));
       localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -38,6 +43,12 @@ const PaymentForm = () => {
     const cardElement = elements.getElement(CardElement);
 
     try {
+      // Check for missing delivery details
+      if (!name || !mobile || !address || !city || !postalCode) {
+        setError('Please fill in all delivery details.');
+        return;
+      }
+
       const response = await fetch('https://server-main-5.onrender.com/payments/create-payment-intent', {
         method: 'POST',
         headers: {
@@ -77,8 +88,69 @@ const PaymentForm = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-        <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Payment Details</h2>
-        
+        <h2 className="text-2xl font-semibold text-gray-700 text-center mb-6">Checkout & Payment</h2>
+
+        {/* Delivery Address Form */}
+        <div className="mb-6">
+          <h3 className="text-xl font-bold mb-4">Delivery Address</h3>
+          <div className="mb-4">
+            <label htmlFor="name" className="block font-semibold text-gray-700">Full Name</label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="mobile" className="block font-semibold text-gray-700">Mobile Number</label>
+            <input
+              id="mobile"
+              type="text"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="address" className="block font-semibold text-gray-700">Address</label>
+            <input
+              id="address"
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="city" className="block font-semibold text-gray-700">City</label>
+            <input
+              id="city"
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="postalCode" className="block font-semibold text-gray-700">Postal Code</label>
+            <input
+              id="postalCode"
+              type="text"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+        </div>
+
+        {/* Order Summary */}
         <div className="mb-4">
           <h3 className="text-xl font-bold mb-2">Order Summary</h3>
           {cart && cart.length > 0 ? (
@@ -96,31 +168,9 @@ const PaymentForm = () => {
           )}
         </div>
 
+        {/* Payment Form */}
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="name" className="block font-semibold text-gray-700">Name</label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-          
-          <div className="mb-4">
-            <label htmlFor="mobile" className="block font-semibold text-gray-700">Mobile</label>
-            <input
-              id="mobile"
-              type="text"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-
+          <h3 className="text-xl font-bold mb-4">Payment Details</h3>
           <div className="mb-4">
             <label htmlFor="card" className="block font-semibold text-gray-700">Card Details</label>
             <CardElement id="card" className="p-2 border border-gray-300 rounded" />
