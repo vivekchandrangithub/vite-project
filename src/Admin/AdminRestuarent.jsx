@@ -10,15 +10,14 @@ const AdminRestaurant = () => {
         name: '',
         description: '',
         place: '',
-        image: '',
+        image: '',  // Store base64 image string here
         category: 'veg',
     });
 
     useEffect(() => {
         const fetchRestaurants = async () => {
             try {
-                const response = await axiosInstance({ method: "GET", url: "/restaurents" });
-                console.log(response.data);
+                const response = await axiosInstance.get("/restaurents");
                 setRestaurants(response.data);
             } catch (err) {
                 setError(err.message);
@@ -37,6 +36,16 @@ const AdminRestaurant = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewRestaurant((prev) => ({ ...prev, [name]: value }));
+    };
+
+    // Convert the image file to base64 format
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setNewRestaurant((prev) => ({ ...prev, image: reader.result }));
+        };
     };
 
     const postRestaurant = async () => {
@@ -90,14 +99,15 @@ const AdminRestaurant = () => {
                             onChange={handleChange} 
                             className='border p-2 rounded w-full mb-2' 
                         />
-                        <input 
-                            type='text' 
-                            name='image' 
-                            placeholder='Image URL' 
-                            value={newRestaurant.image} 
-                            onChange={handleChange} 
-                            className='border p-2 rounded w-full mb-2' 
+                        
+                        {/* Image File Input */}
+                        <input
+                            type='file'
+                            accept='image/*'
+                            onChange={handleImageChange}  // Call the function to convert to base64
+                            className='border p-2 rounded w-full mb-2'
                         />
+
                         <select 
                             name='category' 
                             value={newRestaurant.category} 
@@ -133,6 +143,7 @@ const AdminRestaurant = () => {
                         restaurants.map((restaurant, index) => (
                             <li key={restaurant.id || index} className='bg-gray-800 bg-opacity-80 p-4 rounded-lg shadow-lg text-white flex flex-col justify-between transition-transform transform hover:scale-105 duration-300'>
                                 <div className='border border-gray-700 rounded-lg p-4 shadow-md hover:shadow-xl transition-shadow duration-300'>
+                                    {/* Display base64 image */}
                                     <img src={restaurant.image} alt={restaurant.name} className='rounded-lg w-full h-48 object-cover mb-3' />
                                     <div className='font-bold text-xl sm:text-2xl mb-2'>{restaurant.name}</div>
                                     <div className='text-md sm:text-lg mb-1'>Category: <span className='text-yellow-300'>{restaurant.category}</span></div>
