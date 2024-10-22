@@ -19,6 +19,7 @@ const AdminFood = () => {
         const fetchFoods = async () => {
             try {
                 const response = await axiosInstance({ method: "GET", url: "/foods" });
+                console.log(response.data);
                 setFoods(response.data);
             } catch (err) {
                 setError(err.message);
@@ -36,18 +37,7 @@ const AdminFood = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        // If the file is an image, convert it to Base64
-        if (name === 'image') {
-            const file = e.target.files[0]; // get the image file
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = () => {
-                setNewFood((prev) => ({ ...prev, image: reader.result })); // set the Base64 string
-            };
-        } else {
-            setNewFood((prev) => ({ ...prev, [name]: value }));
-        }
+        setNewFood((prev) => ({ ...prev, [name]: value }));
     };
 
     const postFood = async () => {
@@ -111,8 +101,10 @@ const AdminFood = () => {
                             className='border p-2 rounded w-full mb-2' 
                         />
                         <input 
-                            type='file' 
+                            type='text' 
                             name='image' 
+                            placeholder='Image URL' 
+                            value={newFood.image} 
                             onChange={handleChange} 
                             className='border p-2 rounded w-full mb-2' 
                         />
@@ -169,6 +161,7 @@ const AdminFood = () => {
                                 <div>Vegetarian: <span className='text-yellow-300'>{food.isVeg ? 'Yes' : 'No'}</span></div>
                             </div>
                             <div className='flex flex-col sm:flex-row justify-between mt-4'>
+                                
                                 <button 
                                     className='bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-300'
                                     onClick={() => deleteFood(food._id)}
