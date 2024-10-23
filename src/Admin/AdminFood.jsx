@@ -10,7 +10,7 @@ const AdminFood = () => {
         name: '',
         description: '',
         price: '',
-        image: '',
+        image: '', // This will now hold the Base64 string
         category: '',
         isVeg: true,
     });
@@ -19,7 +19,6 @@ const AdminFood = () => {
         const fetchFoods = async () => {
             try {
                 const response = await axiosInstance({ method: "GET", url: "/foods" });
-                console.log(response.data);
                 setFoods(response.data);
             } catch (err) {
                 setError(err.message);
@@ -38,6 +37,17 @@ const AdminFood = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewFood((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setNewFood((prev) => ({ ...prev, image: reader.result })); // Set Base64 string
+            };
+            reader.readAsDataURL(file); // Convert image to Base64
+        }
     };
 
     const postFood = async () => {
@@ -100,13 +110,12 @@ const AdminFood = () => {
                             onChange={handleChange} 
                             className='border p-2 rounded w-full mb-2' 
                         />
+                        {/* File input for image */}
                         <input 
-                            type='text' 
-                            name='image' 
-                            placeholder='Image URL' 
-                            value={newFood.image} 
-                            onChange={handleChange} 
-                            className='border p-2 rounded w-full mb-2' 
+                            type='file' 
+                            accept='image/*' 
+                            onChange={handleFileChange} 
+                            className='border p-2 rounded w-full mb-2'
                         />
                         <select 
                             name='category' 

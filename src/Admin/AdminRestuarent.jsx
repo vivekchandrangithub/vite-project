@@ -10,9 +10,10 @@ const AdminRestaurant = () => {
         name: '',
         description: '',
         place: '',
-        image: '',
+        image: '', // Base64 encoded image will be stored here
         category: 'veg',
     });
+    const [imageFile, setImageFile] = useState(null); // State for the uploaded image file
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -34,9 +35,23 @@ const AdminRestaurant = () => {
         setIsOpen(!isOpen);
     };
 
+    // Handle text input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewRestaurant((prev) => ({ ...prev, [name]: value }));
+    };
+
+    // Handle file input change and convert image to base64
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        setImageFile(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setNewRestaurant((prev) => ({ ...prev, image: reader.result }));
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
     };
 
     const postRestaurant = async () => {
@@ -90,12 +105,12 @@ const AdminRestaurant = () => {
                             onChange={handleChange} 
                             className='border p-2 rounded w-full mb-2' 
                         />
+                        {/* Image file input */}
                         <input 
-                            type='text' 
+                            type='file' 
                             name='image' 
-                            placeholder='Image URL' 
-                            value={newRestaurant.image} 
-                            onChange={handleChange} 
+                            accept='image/*' 
+                            onChange={handleImageChange} 
                             className='border p-2 rounded w-full mb-2' 
                         />
                         <select 
@@ -140,7 +155,6 @@ const AdminRestaurant = () => {
                                     <div className='text-sm sm:text-md mb-3'>{restaurant.description}</div>
                                 </div>
                                 <div className='flex flex-col sm:flex-row justify-between mt-4'>
-                                   
                                     <button className='bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-300'>
                                         Delete Restaurant
                                     </button>
