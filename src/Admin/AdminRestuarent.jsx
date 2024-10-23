@@ -10,7 +10,7 @@ const AdminRestaurant = () => {
         name: '',
         description: '',
         place: '',
-        image: '', // Base64 encoded image will be stored here
+        image: '',
         category: 'veg',
     });
     const [imageFile, setImageFile] = useState(null); // State for the uploaded image file
