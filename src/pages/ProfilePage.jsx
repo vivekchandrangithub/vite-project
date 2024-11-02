@@ -48,34 +48,40 @@ const ProfilePage = () => {
   // Render the user's profile details
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-transparent p-4">
-    <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-      <h2 className="text-3xl font-bold text-center mb-6">User Profile</h2>
-      <div className="mb-4">
-        <strong className="text-lg">Name:</strong> 
-        <span className="ml-2 text-gray-700">{user.name}</span>
-      </div>
-      <div className="mb-4">
-        <strong className="text-lg">Email:</strong> 
-        <span className="ml-2 text-gray-700">{user.email}</span>
-      </div>
-      <div className="mb-4">
-        <strong className="text-lg">Mobile:</strong> 
-        <span className="ml-2 text-gray-700">{user.mobile}</span>
-      </div>
-      <div className="mt-6 mb-4 flex justify-center">
-        <button
-          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded shadow hover:bg-blue-600 transition duration-300"
-          onClick={() => {
-            localStorage.removeItem('token'); 
-            toast.success('Logged out successfully');
-            navigate('/login'); 
-          }}
-        >
-          Logout
-        </button>
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+        <h2 className="text-3xl font-bold text-center mb-6">User Profile</h2>
+        <div className="mb-4">
+          <strong className="text-lg">Name:</strong>
+          <span className="ml-2 text-gray-700">{user.name}</span>
+        </div>
+        <div className="mb-4">
+          <strong className="text-lg">Email:</strong>
+          <span className="ml-2 text-gray-700">{user.email}</span>
+        </div>
+        <div className="mb-4">
+          <strong className="text-lg">Mobile:</strong>
+          <span className="ml-2 text-gray-700">{user.mobile}</span>
+        </div>
+        <div className="mt-6 mb-4 flex justify-center">
+          <button
+            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded shadow hover:bg-blue-600 transition duration-300 mr-4"
+            onClick={() => {
+              localStorage.removeItem('token');
+              toast.success('Logged out successfully');
+              navigate('/login');
+            }}
+          >
+            Logout
+          </button>
+          <button
+            className="bg-green-500 text-white font-semibold py-2 px-4 rounded shadow hover:bg-green-600 transition duration-300"
+            onClick={() => navigate('/myorders')}
+          >
+            My Orders
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 

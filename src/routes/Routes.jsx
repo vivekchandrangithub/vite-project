@@ -20,6 +20,8 @@ import UserList from "../Admin/UserList";
 import AdminRestuarent from "../Admin/AdminRestuarent";
 import AdminFood from "../Admin/AdminFood";
 import AdminLoginPage from "../pages/AdminLogin";
+import UserOrders from "../pages/UserOrders";
+import Userorderpage from "../pages/UserOrders";
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -82,6 +84,10 @@ export const router = createBrowserRouter([
             <ProfilePage />
           </AuthUser>
         ),
+      },
+      {
+        path:"myorders",
+        element:<Userorderpage/>
       },
       {
         path: "/singlerestaurent/:id",
