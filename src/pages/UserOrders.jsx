@@ -8,7 +8,7 @@ const UserOrderPage = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch('http://localhost:3000/carts', {
+    fetch('https://server-main-5.onrender.com/carts', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -36,7 +36,7 @@ const UserOrderPage = () => {
     if (window.confirm('Are you sure you want to remove all items from this order?')) {
       const token = localStorage.getItem('token');
 
-      fetch(`http://localhost:3000/carts/${orderId}`, {
+      fetch(`https://server-main-5.onrender.com/carts/${orderId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

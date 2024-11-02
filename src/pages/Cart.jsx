@@ -43,7 +43,7 @@ export const Cart = () => {
   
         console.log('Cart Details:', cartDetails); // Debug log
   
-        const response = await fetch('http://localhost:3000/carts', {
+        const response = await fetch('https://server-main-5.onrender.com/carts', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

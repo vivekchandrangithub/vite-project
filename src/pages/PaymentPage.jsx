@@ -49,7 +49,7 @@ const PaymentForm = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/payments/create-payment-intent', {
+      const response = await fetch('https://server-main-5.onrender.com/payments/create-payment-intent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
