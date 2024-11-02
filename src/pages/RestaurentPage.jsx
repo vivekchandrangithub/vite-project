@@ -6,13 +6,15 @@ const RestaurentPage = () => {
     const [restaurants, setRestaurants] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchRestaurants = async () => {
             try {
                 const response = await axiosInstance({ method: "GET", url: "/restaurents" });
-                console.log(response.data);
-                setRestaurants(response.data); 
+                setRestaurants(response.data);
+                setFilteredRestaurants(response.data); // Initialize with all restaurants
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -23,54 +25,74 @@ const RestaurentPage = () => {
         fetchRestaurants();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    // Function to handle search filtering
+    const handleSearchChange = (e) => {
+        const term = e.target.value;
+        setSearchTerm(term);
+        if (!term) {
+            setFilteredRestaurants(restaurants); // If no search term, show all
+        } else {
+            const filtered = restaurants.filter(restaurant =>
+                restaurant.name.toLowerCase().includes(term.toLowerCase())
+            );
+            setFilteredRestaurants(filtered);
+        }
+    };
+
+    if (loading) return <div className="text-center text-white">Loading...</div>;
+    if (error) return <div className="text-center text-red-500">Error: {error}</div>;
 
     return (
-<div className=" min-h-screen">
-  <h1 className="text-4xl text-center p-5 font-bold text-white">
-    Welcome to Our Restaurants Collection
-  </h1>
-  <p className="text-2xl text-center p-2 font-semibold text-white">
-    Please enjoy your food from your favorite restaurant
-  </p>
-  <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-5">
-    {restaurants.length === 0 ? (
-      <li className="text-lg text-center text-white col-span-4">
-        No restaurants available.
-      </li>
-    ) : (
-      restaurants.map((restaurant, index) => (
-        <li
-          key={restaurant.id || index}
-          className="bg-white bg-opacity-20 p-4 rounded-lg shadow-lg text-white flex flex-col justify-between transition-transform transform hover:scale-105"
-        >
-          <div className="border border-gray-300 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-            {/* Restaurant Image */}
-            <img
-              src={restaurant.image}
-              alt={restaurant.name}
-              className="w-full h-40 object-cover"
+        <div className="min-h-screen p-5">
+            {/* Search Bar */}
+            <input
+                type="text"
+                placeholder="Search Restaurants..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="mt-2 sm:mt-0 px-4 py-2 border border-gray-300 rounded-full bg-transparent text-white focus:outline-none focus:ring-2 focus:ring-orange-500 mb-5"
             />
-            <div className="p-4">
-              <div className="font-bold text-xl mb-2">{restaurant.name}</div>
-              <div className="text-md mb-1">Category: {restaurant.category}</div>
-              <div className="text-md mb-1">Location: {restaurant.place}</div>
-              <Link
-                to={`/singlerestaurent/${restaurant._id}`}
-                className="block bg-orange-300 text-white text-center px-4 py-2 mt-3 rounded hover:bg-blue-600 transition-colors duration-300 w-full"
-              >
-                View
-              </Link>
-            </div>
-          </div>
-        </li>
-      ))
-    )}
-  </ul>
-</div>
-
-
+            <h1 className="text-4xl text-center p-5 font-bold text-white">
+                Welcome to Our Restaurants Collection
+            </h1>
+            <p className="text-2xl text-center p-2 font-semibold text-gray-300">
+                Please enjoy your food from your favorite restaurant
+            </p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
+                {filteredRestaurants.length === 0 ? (
+                    <li className="text-lg text-center text-white col-span-4">
+                        No restaurants available.
+                    </li>
+                ) : (
+                    filteredRestaurants.map((restaurant, index) => (
+                        <li
+                            key={restaurant.id || index}
+                            className="bg-white bg-opacity-30 p-4 rounded-lg shadow-lg text-white flex flex-col justify-between transition-transform transform hover:scale-105 hover:bg-opacity-50"
+                        >
+                            <div className="border border-gray-300 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                                {/* Restaurant Image */}
+                                <img
+                                    src={restaurant.image}
+                                    alt={restaurant.name}
+                                    className="w-full h-40 object-cover"
+                                />
+                                <div className="p-4">
+                                    <div className="font-bold text-xl mb-2">{restaurant.name}</div>
+                                    <div className="text-md mb-1">Category: {restaurant.category}</div>
+                                    <div className="text-md mb-1">Location: {restaurant.place}</div>
+                                    <Link
+                                        to={`/singlerestaurent/${restaurant._id}`}
+                                        className="block bg-orange-500 text-white text-center px-4 py-2 mt-3 rounded hover:bg-orange-600 transition-colors duration-300"
+                                    >
+                                        View Restaurant
+                                    </Link>
+                                </div>
+                            </div>
+                        </li>
+                    ))
+                )}
+            </ul>
+        </div>
     );
 };
 

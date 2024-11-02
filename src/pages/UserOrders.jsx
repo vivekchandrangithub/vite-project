@@ -8,12 +8,12 @@ const UserOrderPage = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch('https://server-main-5.onrender.com/carts', {
+    fetch('http://localhost:3000/carts', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -22,40 +22,38 @@ const UserOrderPage = () => {
         return response.json();
       })
       .then((data) => {
-        console.log('Fetched orders:', data); // Log the full response
+        console.log('Fetched orders:', data);
         setOrders(data);
       })
       .catch((error) => {
         setError(error.message);
-        toast.error(error.message); // Display error toast
+        toast.error(error.message);
       });
   }, []);
 
-  // Function to remove all items from an order
   const removeAllItems = (orderId) => {
-    if (window.confirm('Are you sure you want to remove all items from this order?')) {
+    if (window.confirm('Are you sure you want to clear your order history?')) {
       const token = localStorage.getItem('token');
 
-      fetch(`https://server-main-5.onrender.com/carts/${orderId}`, {
+      fetch(`http://localhost:3000/carts/${orderId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error('Failed to remove items');
+            throw new Error('Failed to clear order history');
           }
-          // Update orders to remove the entire order locally
           setOrders((prevOrders) =>
-            prevOrders.filter(order => order._id !== orderId)
+            prevOrders.filter((order) => order._id !== orderId)
           );
-          toast.success('All items removed successfully!'); // Display success toast
+          toast.success('Order history cleared successfully!');
         })
         .catch((error) => {
           setError(error.message);
-          toast.error(error.message); // Display error toast
+          toast.error(error.message);
         });
     }
   };
@@ -63,42 +61,57 @@ const UserOrderPage = () => {
   return (
     <div className="container mx-auto p-6">
       <Toaster />
-      <h2 className="text-3xl font-bold mb-6">Your Orders</h2>
-      {error && <p className="text-red-500">{error}</p>}
+      <h2 className="text-3xl font-bold mb-6 text-center">Your Orders</h2>
+      {error && <p className="text-red-500 text-center">{error}</p>}
       {orders.length === 0 ? (
-        <p className="text-gray-600">No orders found</p>
+        <p className="text-gray-600 text-center">No orders found</p>
       ) : (
         orders.map((order) => (
-          <article key={order._id} className="bg-white shadow-md rounded-lg p-4 mb-4">
-            <h3 className="text-xl font-semibold">Order from: {order.restaurent}</h3>
-            <p className="text-gray-700">Status: {order.status}</p>
-            <p className="text-gray-700">Total Price: ₹{order.totalprice}</p>
-            <h4 className="text-lg font-medium mt-4">Items:</h4>
+          <article
+            key={order._id}
+            className="bg-white shadow-md rounded-lg p-6 mb-6 max-w-xl mx-auto"
+          >
+            <h4 className="text-lg font-medium mb-4 text-center">Order Items</h4>
             {Array.isArray(order.items) && order.items.length > 0 ? (
               order.items.map((item) => (
-                <div key={item._id} className="flex items-center justify-between p-2 border-b">
+                <div
+                  key={item._id}
+                  className="flex items-center justify-between p-2 border-b last:border-b-0"
+                >
                   <div className="flex items-center">
-                    <img 
-                      src={item.image || 'default-image.png'} // Default image if not available
-                      alt={item.name || 'Food Item'} 
-                      className="w-16 h-16 object-cover rounded mr-4" 
+                    <img
+                      src={item.image || 'default-image.png'}
+                      alt={item.name || 'Food Item'}
+                      className="w-16 h-16 object-cover rounded mr-4"
                     />
                     <div>
                       <p className="font-medium">{item.name}</p>
-                      <p className="text-sm">Quantity: {item.quantity}</p>
-                      <p className="text-sm">Price: ₹{item.price}</p>
+                      <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                      <p className="text-sm text-gray-600">Price: ₹{item.price}</p>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-gray-600">No items found in this order</p>
+              <p className="text-gray-600 text-center">No items found in this order</p>
             )}
-            <button 
-              onClick={() => removeAllItems(order._id)} 
-              className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200"
+            {/* Total Expense */}
+            <div className="flex justify-between items-center mt-4">
+              <span className="font-bold">Total Expense:</span>
+              <span className="font-semibold text-xl text-green-600">
+                ₹
+                {order.items.reduce(
+                  (total, item) => total + item.price * item.quantity,
+                  0
+                )}
+              </span>
+            </div>
+            {/* Clear Order History Button */}
+            <button
+              onClick={() => removeAllItems(order._id)}
+              className="mt-6 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200 w-full"
             >
-              Remove All Items
+              Clear My Order History
             </button>
           </article>
         ))

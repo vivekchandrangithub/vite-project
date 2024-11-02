@@ -38,12 +38,12 @@ export const Cart = () => {
           quantity: item.quantity,
           image: item.image,
         }));
-  
+
         const total = calculateTotal();
-  
+
         console.log('Cart Details:', cartDetails); // Debug log
-  
-        const response = await fetch('https://server-main-5.onrender.com/carts', {
+
+        const response = await fetch('http://localhost:3000/carts', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const Cart = () => {
           },
           body: JSON.stringify({ items: cartDetails, totalPrice: total })
         });
-  
+
         if (response.ok) {
           navigate('/payment', { state: { cart, total } });
         } else {
@@ -70,8 +70,8 @@ export const Cart = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen p-5">
-      <h2 className="text-3xl font-bold text-center mb-6">Your Cart</h2>
-      <div className="bg-white shadow-lg rounded-lg p-5">
+      <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Your Cart</h2>
+      <div className="bg-white shadow-lg rounded-lg p-5 max-w-3xl mx-auto">
         <div className="cart-items space-y-4">
           {cart.length > 0 ? (
             cart.map((item, index) => (
@@ -80,22 +80,22 @@ export const Cart = () => {
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-20 h-20 object-cover rounded-md border border-gray-300"
+                    className="w-20 h-20 object-cover rounded-md border border-gray-300 shadow-sm"
                   />
                   <div className="ml-4">
-                    <p className="text-lg font-semibold">{item.name}</p>
+                    <p className="text-lg font-semibold text-gray-900">{item.name}</p>
                     <p className="text-gray-700">Price: ₹{item.price}</p>
                     <input
                       type="number"
                       value={item.quantity}
                       min="1"
-                      className="mt-2 p-1 border border-gray-300 rounded"
+                      className="mt-2 p-1 border border-gray-300 rounded w-16 text-center"
                       onChange={(e) => handleQuantityChange(item, parseInt(e.target.value))} 
                     />
                   </div>
                 </div>
                 <div className="flex flex-col items-end">
-                  <p className="text-lg font-semibold">Subtotal: ₹{item.price * item.quantity}</p>
+                  <p className="text-lg font-semibold text-gray-900">Subtotal: ₹{item.price * item.quantity}</p>
                   <button
                     onClick={() => handleRemoveFromCart(item)}
                     className="text-red-500 hover:text-red-700 mt-2"
@@ -111,8 +111,8 @@ export const Cart = () => {
         </div>
 
         {cart.length > 0 && (
-          <div className="cart-total mt-5">
-            <h3 className="text-xl font-bold text-right">Total: ₹{calculateTotal()}</h3>
+          <div className="cart-total mt-5 border-t border-gray-300 pt-4">
+            <h3 className="text-xl font-bold text-right text-gray-800">Total: ₹{calculateTotal()}</h3>
           </div>
         )}
         <button

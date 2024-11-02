@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../config/axiosinstance';
 import { toast } from 'react-hot-toast';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingBag } from '@fortawesome/free-solid-svg-icons';
 
 const FoodPage = () => {
   const [foods, setFoods] = useState([]);
@@ -25,11 +27,8 @@ const FoodPage = () => {
   }, []);
 
   const addToCart = (food) => {
-    // Check if the user is logged in by verifying if a token exists in localStorage
-    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
-
+    const token = localStorage.getItem('token');
     if (!token) {
-      // If not logged in, show a toast message and return
       toast.error('Login first to add a food item to your cart.');
       return;
     }
@@ -40,7 +39,7 @@ const FoodPage = () => {
     } else {
       const newCart = [...cart, { ...food, quantity: 1 }];
       setCart(newCart);
-      localStorage.setItem('cart', JSON.stringify(newCart)); // Save to localStorage
+      localStorage.setItem('cart', JSON.stringify(newCart));
       toast.success(`${food.name} added to cart successfully!`);
     }
   };
@@ -57,7 +56,7 @@ const FoodPage = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="">
+    <div className="bg-base-200">
       <h1 className="text-4xl text-center p-5 font-bold text-white">Welcome to Our Foods Collection</h1>
       <p className="text-2xl text-center p-2 font-bold text-white">Please enjoy your food from your favorite restaurant</p>
     
@@ -95,7 +94,8 @@ const FoodPage = () => {
         )}
       </ul>
   
-      <button className="bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300" onClick={proceedToCheckout}>
+      <button className="bg-red-700 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 flex items-center justify-center" onClick={proceedToCheckout}>
+        <FontAwesomeIcon icon={faShoppingBag} className="mr-2" />
         Proceed to Checkout
       </button>
     </div>
